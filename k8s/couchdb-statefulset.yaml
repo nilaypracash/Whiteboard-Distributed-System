@@ -34,6 +34,8 @@ spec:
           value: "admin"
         - name: COUCHDB_PASSWORD
           value: "password"
+        - name: COUCHDB_REQUIRE_VALID_USER
+          value: "false"  # Allow anonymous access
         ports:
         - containerPort: 5984
         volumeMounts:

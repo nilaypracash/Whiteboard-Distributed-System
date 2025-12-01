@@ -17,7 +17,7 @@ spec:
         image: gcr.io/whiteboard-479910/wb-app:latest
         env:
         - name: COUCHDB_LOCAL
-          value: "http://couchdb-1.couchdb:5984"  # app-b pods target couchdb-1
+          value: "http://admin:password@couchdb-0.couchdb.default.svc.cluster.local:5984"  # app-b pods target couchdb-1
         - name: DB_PREFIX
           value: "wb_"
         ports:

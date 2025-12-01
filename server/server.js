@@ -9,7 +9,7 @@ const nano = require('nano');
 const fetch = require('node-fetch');
 
 const APP_PORT = process.env.PORT || 8080;
-const COUCHDB_LOCAL = process.env.COUCHDB_LOCAL || 'http://couchdb-0.couchdb:5984';
+const COUCHDB_LOCAL = process.env.COUCHDB_LOCAL || 'http://couchdb-0.couchdb.default.svc.cluster.local:5984';
 const DB_PREFIX = process.env.DB_PREFIX || 'wb_';
 
 const couch = nano(COUCHDB_LOCAL);
