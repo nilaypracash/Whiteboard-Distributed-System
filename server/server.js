@@ -17,6 +17,12 @@ const docs = new Map(); // roomId -> { ydoc, db, conns:Set(ws) }
 
 const app = express();
 
+// Serve yjs with correct MIME type BEFORE static files
+app.get('/yjs.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'node_modules/yjs/dist/yjs.js'));
+});
+
 // serve static frontend (index.html + main.js)
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -142,4 +148,6 @@ wss.on('connection', async (ws, req) => {
   ws.on('close', () => entry.conns.delete(ws));
 });
 
-server.listen(APP_PORT, () => console.log('App server listening on', APP_PORT));
+server.listen(APP_PORT, '0.0.0.0', () =>
+  console.log('App server listening on', APP_PORT)
+);

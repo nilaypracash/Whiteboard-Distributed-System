@@ -1,5 +1,5 @@
 // main.js - frontend whiteboard logic (runs in browser)
-/* global Y */
+import * as Y from 'yjs';
 
 let ws = null;
 let ydoc = null;
@@ -42,15 +42,10 @@ function connect() {
   const wsUrl = `${protocol}://${window.location.host}/?room=${encodeURIComponent(roomId)}`;
   ws = new WebSocket(wsUrl);
 
-  ws.onopen = () => {
-    statusEl.textContent = `Connected (${roomId})`;
-  };
-  ws.onclose = () => {
-    statusEl.textContent = 'Disconnected';
-  };
-  ws.onerror = () => {
-    statusEl.textContent = 'Error';
-  };
+  ws.onopen = () => statusEl.textContent = `Connected (${roomId})`;
+  ws.onclose = () => statusEl.textContent = 'Disconnected';
+  ws.onerror = () => statusEl.textContent = 'Error';
+
   ws.onmessage = (ev) => {
     try {
       const data = JSON.parse(ev.data);
@@ -63,7 +58,6 @@ function connect() {
     }
   };
 
-  // send local updates to server
   ydoc.on('update', (update) => {
     if (ws && ws.readyState === WebSocket.OPEN) {
       const b64 = btoa(String.fromCharCode(...update));
@@ -71,7 +65,6 @@ function connect() {
     }
   });
 
-  // re-render whenever shapes change
   shapes.observe(renderAll);
 }
 
@@ -83,7 +76,7 @@ function renderAll() {
       ctx.strokeStyle = s.color || '#fff';
       ctx.lineWidth = s.width || 2;
       const pts = s.points;
-      if (pts && pts.length) {
+      if (pts.length > 0) {
         ctx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
         ctx.stroke();
@@ -100,7 +93,6 @@ function renderAll() {
   });
 }
 
-// drawing handlers
 canvas.addEventListener('mousedown', (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
@@ -118,8 +110,7 @@ canvas.addEventListener('mousedown', (e) => {
   } else if (currentTool === 'text') {
     const text = prompt('Enter text:');
     if (text) {
-      const s = { type: 'text', color: currentColor, x, y, text };
-      shapes.push([s]);
+      shapes.push([{ type: 'text', color: currentColor, x, y, text }]);
     }
     isDrawing = false;
     tempShape = null;
@@ -139,7 +130,6 @@ canvas.addEventListener('mousemove', (e) => {
     tempShape.h = y - startY;
   }
 
-  // replace last shape to trigger Yjs update
   const idx = shapes.length - 1;
   shapes.delete(idx, 1);
   shapes.push([tempShape]);
@@ -150,5 +140,5 @@ window.addEventListener('mouseup', () => {
   tempShape = null;
 });
 
-// connect on first load
 connect();
+

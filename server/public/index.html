@@ -33,9 +33,10 @@
     <button id="joinBtn">Join</button>
     <span id="status" style="margin-left:auto;">Disconnected</span>
   </div>
+
   <canvas id="canvas" width="1000" height="600"></canvas>
 
-  <script src="https://unpkg.com/yjs@13.5.24/dist/yjs.js"></script>
-  <script src="./main.js"></script>
+  <!-- THE MISSING LINE THAT MAKES THE ENTIRE APP WORK -->
+  <script type="module" src="./bundle.js"></script>
 </body>
 </html>
