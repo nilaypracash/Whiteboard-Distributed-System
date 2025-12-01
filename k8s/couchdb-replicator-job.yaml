@@ -13,14 +13,14 @@ spec:
         - -c
         - |
           set -e
-          COUCH0="http://admin:password@couchdb-0.couchdb:5984"
-          COUCH1="http://admin:password@couchdb-1.couchdb:5984"
+          COUCH0="http://admin:password@couchdb-0.couchdb.default.svc.cluster.local:5984"
+          COUCH1="http://admin:password@couchdb-1.couchdb.default.svc.cluster.local:5984"
           echo "Creating _replicator DBs and continuous replications"
           for url in $COUCH0 $COUCH1; do
             curl -s -X PUT "$url/_replicator" || true
           done
           # Create continuous replications on each node both directions
-          curl -s -X POST "$COUCH0/_replicator" -H "Content-Type: application/json" -d '{"_id":"rep0-to-1","source":"http://admin:password@couchdb-0.couchdb:5984","target":"http://admin:password@couchdb-1.couchdb:5984","continuous":true}' || true
-          curl -s -X POST "$COUCH1/_replicator" -H "Content-Type: application/json" -d '{"_id":"rep1-to-0","source":"http://admin:password@couchdb-1.couchdb:5984","target":"http://admin:password@couchdb-0.couchdb:5984","continuous":true}' || true
+          curl -s -X POST "$COUCH0/_replicator" -H "Content-Type: application/json" -d '{"_id":"rep0-to-1","source":"http://admin:password@couchdb-0.couchdb.default.svc.cluster.local:5984","target":"http://admin:password@couchdb-1.couchdb.default.svc.cluster.local:5984","continuous":true}' || true
+          curl -s -X POST "$COUCH1/_replicator" -H "Content-Type: application/json" -d '{"_id":"rep1-to-0","source":"http://admin:password@couchdb-1.couchdb.default.svc.cluster.local:5984","target":"http://admin:password@couchdb-0.couchdb.default.svc.cluster.local:5984","continuous":true}' || true
       restartPolicy: OnFailure
   backoffLimit: 2
