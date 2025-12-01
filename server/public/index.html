@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Distributed Whiteboard</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #222; color: #eee; }
+    #toolbar {
+      padding: 8px;
+      background: #333;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    button { padding: 4px 8px; cursor: pointer; }
+    #canvas {
+      display: block;
+      border-top: 1px solid #444;
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <span>Tool:</span>
+    <button data-tool="pen">Pen</button>
+    <button data-tool="rect">Rectangle</button>
+    <button data-tool="text">Text</button>
+    <span style="margin-left:16px;">Color:</span>
+    <input type="color" id="colorPicker" value="#ffffff" />
+    <span style="margin-left:16px;">Room:</span>
+    <input id="roomInput" value="room1" />
+    <button id="joinBtn">Join</button>
+    <span id="status" style="margin-left:auto;">Disconnected</span>
+  </div>
+  <canvas id="canvas" width="1000" height="600"></canvas>
+
+  <script src="https://unpkg.com/yjs@13.5.24/dist/yjs.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>

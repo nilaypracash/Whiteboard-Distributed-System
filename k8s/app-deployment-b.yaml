@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-b
+  template:
+    metadata:
+      labels:
+        app: app-b
+    spec:
+      containers:
+      - name: wb
+        image: gcr.io/whiteboard-479910/wb-app:latest
+        env:
+        - name: COUCHDB_LOCAL
+          value: "http://couchdb-1.couchdb:5984"  # app-b pods target couchdb-1
+        - name: DB_PREFIX
+          value: "wb_"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-b
+spec:
+  type: LoadBalancer
+  selector:
+    app: app-b
+  ports:
+  - port: 80
+    targetPort: 8080
