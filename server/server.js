@@ -108,7 +108,7 @@ async function setupRoom(room) {
     } catch (e) {
       // ignore transient errors
     } finally {
-      setTimeout(pollChanges, 1000);
+      setTimeout(pollChanges, 10); // Reduced delay for more real-time updates
     }
   }
   pollChanges();
